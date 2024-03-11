@@ -1,15 +1,27 @@
-// src/routes/auth/Login.js
-import React from 'react';
-import './auth.css';
+const express = require('express')
+const router = express.Router()
+const User = require('../../models/User')
+const { comparePassword } = require('../../utils/password')
+const { generateToken } = require('../../utils/tokens')
 
-function Login({ username, password, setUsername, setPassword }) {
-  return (
-    <form>
-      <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
-      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
-      <button type="submit">Log In</button>
-    </form>
-  );
-}
+router.post('/', async (req, res) => {
+    User.findOne({ where: { username: req.body.username } })
+        .then(user => {
+            comparePassword(req.body.password, user.password)
+                .then(correct => {
+                    if (correct) {
+                        generateToken(user.id, user.username)
+                            .then(token => res.send({
+                                message: 'Logged in successfully',
+                                accessToken: token,
+                            }))
+                            .catch(err => res.status(500).send(err))
+                    } else {
+                        res.status(401).send({ message: 'Incorrect credentials' })
+                    }
+                })
+        })
+        .catch(() => res.status(401).send({ message: 'Incorrect credentials' }))
+})
 
-export default Login;
+module.exports = router
