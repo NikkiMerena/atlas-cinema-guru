@@ -10,14 +10,13 @@ const Authentication = ({ setIsLoggedIn, setUserUsername }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = async (onSubmit) => {
-    onSubmit.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
     const endpoint = _switch ? 'http://localhost:8000/api/auth/login' : 'http://localhost:8000/api/auth/register';
 
     try {
       const response = await axios.post(endpoint, { username, password });
-
       const { accessToken } = response.data;
 
       if (accessToken) {
@@ -26,7 +25,7 @@ const Authentication = ({ setIsLoggedIn, setUserUsername }) => {
         setIsLoggedIn(true);
       }
     } catch (error) {
-      console.error('Authentication error:', error);
+      console.error('Authentication error:', error.response?.data?.message || error.message);
     }
   };
 
