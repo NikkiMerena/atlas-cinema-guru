@@ -1,35 +1,67 @@
-.input-container,
-.select-input-container,
-.custom-button,
-.search-bar-container {
-  margin-bottom: 15px;
+@import '../../App.css';
+
+/* #region INPUT */
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin: 5%;
 }
 
-.input-container {
+.input-wrapper {
+  position: relative;
   display: flex;
   align-items: center;
 }
 
-.input-container label {
-  margin-right: 10px;
+.label-icon-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
 }
 
-.select-input-container label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-.custom-button {
-  padding: 10px 15px;
-  background-color: #3498db;
-  color: #fff;
+.input-wrapper input {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
   border: none;
-  cursor: pointer;
+  border-bottom: 1px solid var(--color-dark-red);
+  width: 100%;
 }
 
-.search-bar-container input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+.input-wrapper input:focus {
+  outline: none;
+  border-bottom-color: var(--color-dark-red);
 }
+
+label {
+  color: var(--color-black-text);
+}
+
+.icon-default {
+  color: var(--color-gray);
+  margin-right: 8px;
+}
+
+.toggle-password-icon {
+  position: absolute;
+  right: 2px;
+  cursor: pointer;
+  color: var(--color-gray)
+}
+
+/* #endregion */
+
+/* #region BUTTONS */
+
+button {
+  font-size: 15px;
+  background-color: var(--color-dark-red);
+  color: var(--color-white);
+  border: none;
+  margin: 5px;
+  padding: 8px 16px;
+  transition: background-color 0.5s ease;
+}
+
+/* #endregion */
