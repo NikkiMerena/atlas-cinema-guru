@@ -1,45 +1,44 @@
-// Register.js
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import './auth.css';
 import Button from '../../components/general/Button';
 import Input from '../../components/general/Input';
 import { faUser, faLock, faPlus } from '@fortawesome/free-solid-svg-icons';
 
-const Register = ({ username, password, setPassword, setUsername }) => {
+const Register = ({ username, password, setUsername, setPassword }) => {
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-    // password hidden by default
-    const [hidden, setHidden] = useState(false);
+  const togglePasswordVisibility = () => setIsPasswordVisible(!isPasswordVisible);
 
-    // toggle password visibility
-    const togglePassword = () => {
-        setHidden(!hidden);
-    };
-
-    return (
-        <div className="register">
-            <p>Create a new account</p>
-                <Input
-                    type='text'
-                    label="Username:"
-                    className="username"
-                    value={username}
-                    setValue={setUsername}
-                    icon={faUser}
-                />
-                <Input
-                    type="password"
-                    label="Password:"
-                    className="username"
-                    value={password}
-                    setValue={setPassword}
-                    isHidden={hidden}
-                    togglePassword={togglePassword}
-                    icon={faLock}
-                    showPassword={true}
-                />
-            <Button label="  Sign In" type='submit' className="login-button" icon={faPlus} />
-        </div>
-    );
+  return (
+    <div className="register">
+      <p>Create a new account</p>
+      <Input
+        label="Username:"
+        type="text"
+        className="username"
+        value={username}
+        setValue={setUsername}
+        icon={faUser}
+      />
+      <Input
+        label="Password:"
+        type="password"
+        className="password"
+        value={password}
+        setValue={setPassword}
+        icon={faLock}
+        showPasswordToggle={true}
+        isPasswordVisible={isPasswordVisible}
+        togglePassword={togglePasswordVisibility}
+      />
+      <Button
+        label="Sign Up"
+        type="submit"
+        className="register-button"
+        icon={faPlus}
+      />
+    </div>
+  )
 }
 
 export default Register;

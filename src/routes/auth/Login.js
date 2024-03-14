@@ -1,49 +1,44 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import './auth.css';
+import Button from '../../components/general/Button';
+import Input from '../../components/general/Input';
+import { faUser, faKey } from '@fortawesome/free-solid-svg-icons';
 
-const Login = ({ onLoginSuccess }) => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+const Login = ({ username, password, setUsername, setPassword }) => {
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-    const handleLogin = async (event) => {
-        event.preventDefault();
+  const togglePasswordVisibility = () => setIsPasswordVisible(!isPasswordVisible);
 
-        try {
-            const response = await axios.post('http://localhost:8000/api/auth/', {
-                username,
-                password,
-            });
-
-            if (response.data.accessToken) {
-                localStorage.setItem('accessToken', response.data.accessToken);
-                onLoginSuccess(response.data.accessToken);
-            }
-        } catch (err) {
-            setError(err.response?.data?.message || 'An error occurred during login.');
-        }
-    };
-
-    return (
-        <div>
-            <form onSubmit={handleLogin}>
-                <input
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    placeholder="Username"
-                />
-                <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Password"
-                />
-                <button type="submit">Login</button>
-            </form>
-            {error && <p>{error}</p>}
-        </div>
-    );
-};
+  return (
+    <div className="login">
+      <p>Sign in with your account</p>
+      <Input
+        label="Username:"
+        type="text"
+        className="username"
+        value={username}
+        setValue={setUsername}
+        icon={faUser}
+      />
+      <Input
+        label="Password:"
+        type="password"
+        className="password"
+        value={password}
+        setValue={setPassword}
+        icon={faKey}
+        showPasswordToggle={true}
+        isPasswordVisible={isPasswordVisible}
+        togglePassword={togglePasswordVisibility}
+      />
+      <Button
+        label="Sign In"
+        type="submit"
+        className="login-button"
+        icon={faKey}
+      />
+    </div>
+  )
+}
 
 export default Login;
