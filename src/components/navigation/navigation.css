@@ -1,5 +1,7 @@
 @import '../../App.css';
 
+/* #region HEADER */
+
 .header-nav {
   display: flex;
   flex-direction: row;
@@ -32,3 +34,5 @@ nav img {
 .user-options p {
   margin-right:1.5rem;
 }
+
+/* #endregion */
