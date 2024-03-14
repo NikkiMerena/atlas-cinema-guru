@@ -1,51 +1,44 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
 import axios from 'axios';
+import './App.css';
 import Dashboard from './routes/dashboard/Dashboard';
 import Authentication from './routes/auth/Authentication';
 
 function App() {
-  // State
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userUsername, setUserUsername] = useState('');
+  const [userUsername, setUserUsername] = useState("");
 
-  // useEffect to run on component mount
   useEffect(() => {
-    // Get the value of accessToken item from localStorage
-    const accessToken = localStorage.getItem('accessToken');
+    const accessToken = localStorage.getItem("accessToken");
+    console.log(accessToken);
 
-    // Check if accessToken exists
     if (accessToken) {
-      // Send a post request to /api/auth/ with the authorization header set to Bearer <accessToken>
-      axios({
-        method: 'POST',
-        url: 'localhost:8000/api/auth/',
+      axios.post('http://localhost:8000/api/auth/', {}, {
         headers: {
-          'Authorization': `Bearer ${accessToken}`,
+          Authorization: `Bearer ${accessToken}`
         }
       })
-        .then(response => response.json())
-        .then(data => {
-          // onSuccess: set the isLoggedIn and the userUsername state
-          setIsLoggedIn(true);
-          setUserUsername(data.username);
-        })
-        .catch(error => {
-          // Handle errors or set state accordingly
-          console.error('Error during authentication:', error);
-          setIsLoggedIn(false);
-          setUserUsername('');
-        });
+      .then(response => {
+        setUserUsername(response.data.username);
+        setIsLoggedIn(true);
+      })
+      .catch(error => {
+        console.log('Authentication error:', error.response ? error.response.data : error);
+        // localStorage.removeItem("accessToken");
+        // setIsLoggedIn(false);
+      })
     }
   }, []);
 
   return (
-    <div className="App">
-      {isLoggedIn ? (
-        <Dashboard username={userUsername} />
-      ) : (
-        <Authentication setIsLoggedIn={setIsLoggedIn} setUserUsername={setUserUsername} />
-      )}
+    <div className={`App ${isLoggedIn ? 'dashboard-view' : 'authentication-view'}`}>
+      {isLoggedIn ? <Dashboard
+        userUsername={userUsername}
+        setIsLoggedIn={setIsLoggedIn}
+      /> : <Authentication
+        setIsLoggedIn={setIsLoggedIn}
+        setUserUsername={setUserUsername}
+      />}
     </div>
   );
 }
