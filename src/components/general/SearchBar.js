@@ -1,17 +1,23 @@
-// src/components/general/SearchBar.js
 import React from 'react';
 import './general.css';
 
-const SearchBar = ({ title, setTitle }) => {
-  const handleInput = (e) => {
-    setTitle(e.target.value);
+function SearchBar({ title, setTitle }) {
+  // Handle input changes, calls setTitle w/ new value
+  const handleInput = (event) => {
+    setTitle(event.target.value);
   };
 
   return (
-    <div className="search-bar-container">
-      <input type="text" value={title} onChange={handleInput} placeholder="Search..." />
+    <div className="search-bar">
+      <input
+        type="text"
+        className="search-input"
+        value={title}
+        onChange={handleInput}
+        placeholder="Search..."
+      />
     </div>
   );
-};
+}
 
 export default SearchBar;
